@@ -1,0 +1,29 @@
+services:
+  jenkins:
+    image: jenkins/jenkins:lts
+    container_name: jenkins-devsecops
+    privileged: true
+    user: root
+    ports:
+      - "8080:8080"
+      - "50000:50000"
+    volumes:
+      - jenkins_home:/var/jenkins_home
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - devsecops-net
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana-prod
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    networks:
+      - devsecops-net
+volumes:
+  jenkins_home:
+networks:
+  devsecops-net:
+    driver: bridge
