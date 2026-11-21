@@ -20,7 +20,7 @@ pipeline {
         }
         stage("3. Pruebas OWASP ZAP") {
             steps {
-                sh "docker run --rm --network ${NETWORK_NAME} -v $(pwd):/zap/wrk/:rw -t ghcr.io/zaproxy/zaproxy:stable zap-baseline.py -t http://${CONTAINER_NAME}:5000 -r zap_report.html || true"
+                sh "docker run --rm --network ${NETWORK_NAME} -v ${WORKSPACE}:/zap/wrk/:rw -t ghcr.io/zaproxy/zaproxy:stable zap-baseline.py -t http://${CONTAINER_NAME}:5000 -r zap_report.html || true"
             }
         }
         stage("4. Despliegue Produccion") {
